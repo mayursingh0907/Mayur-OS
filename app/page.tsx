@@ -21,60 +21,24 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-/* ========================================================= */
-/* APPS */
-/* ========================================================= */
+type Project = {
+  name: string;
+  icon: string;
+  image: string;
+  description: string;
+  technologies: string[];
+  features: string[];
+  github: string;
+  live: string;
+};
 
-const apps = [
-  { name: "About", icon: User },
-  { name: "Projects", icon: Laptop },
-  { name: "Social", icon: Camera },
-  { name: "Music", icon: Music },
-  { name: "GitHub", icon: Code2 },
-  { name: "Education", icon: GraduationCap },
-  { name: "Resume", icon: FileText },
-  { name: "Settings", icon: Settings },
-];
-
-/* ========================================================= */
-/* SOCIALS */
-/* ========================================================= */
-
-const socials = [
-  {
-    name: "GitHub",
-    icon: Code2,
-    url: "https://github.com/mayursingh0907",
-  },
-  {
-    name: "Instagram",
-    icon: Camera,
-    url: "#",
-  },
-  {
-    name: "LinkedIn",
-    icon: User,
-    url: "#",
-  },
-];
-
-/* ========================================================= */
-/* PROJECTS */
-/* ========================================================= */
-
-const projects = [
+const projects: Project[] = [
   {
     name: "Mayur OS",
     icon: "💻",
-
-    // IMPORTANT:
-    // Image should be inside:
-    // public/projects/mayur-os.png
     image: "/projects/mayur-os.png",
-
     description:
       "My personal iPad-style digital portfolio and personal operating system built with modern web technologies.",
-
     technologies: [
       "Next.js",
       "TypeScript",
@@ -82,7 +46,6 @@ const projects = [
       "Tailwind CSS",
       "Framer Motion",
     ],
-
     features: [
       "iPad-style interface",
       "Animated app icons",
@@ -90,16 +53,45 @@ const projects = [
       "Project showcase",
       "Responsive design",
     ],
-
     github: "https://github.com/mayursingh0907/Mayur-OS",
-
     live: "#",
   },
 ];
 
-/* ========================================================= */
-/* APP ICON COMPONENT */
-/* ========================================================= */
+const apps = [
+  {
+    name: "About",
+    icon: User,
+  },
+  {
+    name: "Projects",
+    icon: Laptop,
+  },
+  {
+    name: "Social",
+    icon: Camera,
+  },
+  {
+    name: "Music",
+    icon: Music,
+  },
+  {
+    name: "GitHub",
+    icon: Code2,
+  },
+  {
+    name: "Education",
+    icon: GraduationCap,
+  },
+  {
+    name: "Resume",
+    icon: FileText,
+  },
+  {
+    name: "Settings",
+    icon: Settings,
+  },
+];
 
 function AppIcon({
   name,
@@ -117,14 +109,15 @@ function AppIcon({
           rotate: 1,
           boxShadow: "0 15px 40px rgba(0,0,0,0.35)",
         }}
+        whileTap={{
+          scale: 0.94,
+        }}
         transition={{
           type: "spring",
           stiffness: 400,
           damping: 18,
         }}
       >
-        {/* Glass shine */}
-
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
 
         <Icon
@@ -141,26 +134,18 @@ function AppIcon({
   );
 }
 
-/* ========================================================= */
-/* MAIN PAGE */
-/* ========================================================= */
-
 export default function Home() {
   const [activeApp, setActiveApp] = useState<string | null>(null);
-
   const [currentTime, setCurrentTime] = useState("");
-
   const [selectedProject, setSelectedProject] =
-    useState<any>(null);
-
-  /* ======================================================= */
-  /* LIVE CLOCK */
-  /* ======================================================= */
+    useState<Project | null>(null);
 
   useEffect(() => {
     const updateTime = () => {
+      const now = new Date();
+
       setCurrentTime(
-        new Date().toLocaleTimeString([], {
+        now.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         })
@@ -174,25 +159,20 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  /* ======================================================= */
-  /* RETURN */
-  /* ======================================================= */
+  const closeApp = () => {
+    setActiveApp(null);
+  };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#080812] text-white">
-      {/* =================================================== */}
-      {/* DYNAMIC IPAD WALLPAPER */}
-      {/* =================================================== */}
+    <main className="relative min-h-screen overflow-hidden bg-slate-950 text-white">
+      {/* ================= BACKGROUND ================= */}
 
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        {/* Purple glow */}
-
+      <div className="absolute inset-0 overflow-hidden">
         <motion.div
-          className="absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-purple-600/30 blur-[100px]"
+          className="absolute -left-20 -top-20 h-80 w-80 rounded-full bg-purple-600/30 blur-3xl"
           animate={{
             x: [0, 80, 0],
             y: [0, 50, 0],
-            scale: [1, 1.15, 1],
           }}
           transition={{
             duration: 12,
@@ -201,218 +181,153 @@ export default function Home() {
           }}
         />
 
-        {/* Blue glow */}
-
         <motion.div
-          className="absolute -right-40 top-20 h-[500px] w-[500px] rounded-full bg-blue-500/25 blur-[100px]"
+          className="absolute right-[-100px] top-[20%] h-96 w-96 rounded-full bg-blue-500/25 blur-3xl"
           animate={{
             x: [0, -70, 0],
             y: [0, 80, 0],
-            scale: [1, 1.2, 1],
           }}
           transition={{
-            duration: 15,
+            duration: 14,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
-
-        {/* Pink glow */}
 
         <motion.div
-          className="absolute bottom-[-200px] left-1/3 h-[550px] w-[550px] rounded-full bg-pink-500/20 blur-[120px]"
+          className="absolute bottom-[-100px] left-[30%] h-96 w-96 rounded-full bg-pink-500/20 blur-3xl"
           animate={{
-            x: [0, 60, 0],
-            scale: [1, 1.1, 1],
+            x: [0, 80, 0],
+            y: [0, -50, 0],
           }}
           transition={{
-            duration: 18,
+            duration: 16,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
+
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06),transparent_55%)]" />
       </div>
 
-      {/* =================================================== */}
-      {/* STATUS BAR */}
-      {/* =================================================== */}
+      {/* ================= STATUS BAR ================= */}
 
-      <div className="relative z-10 flex items-center justify-between px-6 py-4 text-sm font-semibold">
-        {/* Time */}
-
-        <span>{currentTime}</span>
-
-        {/* Status Icons */}
+      <div className="relative z-20 flex items-center justify-between px-5 py-4 text-xs font-medium text-white/80 sm:px-8">
+        <div>{currentTime}</div>
 
         <div className="flex items-center gap-3">
+          <Radio size={15} />
           <Wifi size={16} />
-
-          <Radio size={16} />
-
-          <Battery size={18} />
+          <Battery size={17} />
         </div>
       </div>
 
-      {/* =================================================== */}
-      {/* MAIN CONTENT */}
-      {/* =================================================== */}
+      {/* ================= MAIN SCREEN ================= */}
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-80px)] max-w-6xl flex-col rounded-[40px] px-6 pb-8">
-        {/* ================================================= */}
-        {/* HEADER */}
-        {/* ================================================= */}
+      <section className="relative z-10 flex min-h-[calc(100vh-64px)] flex-col items-center px-5 pb-32 pt-8 sm:px-10 sm:pt-12">
+        {/* Greeting */}
 
-        <div className="mb-10 mt-6">
-          <p className="text-sm text-white/70">
-            Welcome to
+        <motion.div
+          initial={{ opacity: 0, y: -15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-10 text-center"
+        >
+          <p className="mb-2 text-sm font-medium tracking-[0.3em] text-white/50">
+            WELCOME TO
           </p>
 
-          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
+          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
             Mayur OS
           </h1>
 
-          <p className="mt-2 text-white/70">
-            My personal digital world.
+          <p className="mt-3 text-sm text-white/50 sm:text-base">
+            My personal digital space.
           </p>
-        </div>
+        </motion.div>
 
-        {/* ================================================= */}
-        {/* APP GRID */}
-        {/* ================================================= */}
+        {/* ================= APP GRID ================= */}
 
         <motion.div
-          className="grid grid-cols-4 gap-x-3 gap-y-8 px-2 sm:gap-x-8 md:gap-x-10"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: {},
-
-            visible: {
-              transition: {
-                staggerChildren: 0.08,
-              },
-            },
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.7,
+            delay: 0.15,
           }}
+          className="grid grid-cols-4 gap-x-5 gap-y-8 sm:gap-x-10 sm:gap-y-10"
         >
-          {apps.map((app) => (
+          {apps.map((app, index) => (
             <motion.button
               key={app.name}
               onClick={() => setActiveApp(app.name)}
-              variants={{
-                hidden: {
-                  opacity: 0,
-                  scale: 0.5,
-                  y: 20,
-                },
-
-                visible: {
-                  opacity: 1,
-                  scale: 1,
-                  y: 0,
-                },
+              initial={{
+                opacity: 0,
+                y: 20,
               }}
-              whileHover={{
-                scale: 1.08,
-              }}
-              whileTap={{
-                scale: 0.92,
+              animate={{
+                opacity: 1,
+                y: 0,
               }}
               transition={{
-                type: "spring",
-                stiffness: 400,
-                damping: 15,
+                delay: 0.15 + index * 0.05,
               }}
-              className="flex justify-center focus:outline-none"
+              className="cursor-pointer outline-none"
             >
-              <AppIcon
-                name={app.name}
-                icon={app.icon}
-              />
+              <AppIcon name={app.name} icon={app.icon} />
             </motion.button>
           ))}
         </motion.div>
+      </section>
 
-        <div className="flex-1" />
+      {/* ================= DOCK ================= */}
 
-        {/* ================================================= */}
-        {/* DOCK */}
-        {/* ================================================= */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.6,
+          delay: 0.5,
+        }}
+        className="fixed bottom-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-3 rounded-[28px] border border-white/20 bg-white/[0.12] px-4 py-3 shadow-2xl backdrop-blur-2xl sm:bottom-7 sm:gap-4 sm:px-5"
+      >
+        {apps.slice(0, 5).map((app) => {
+          const Icon = app.icon;
 
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 50,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.6,
-            delay: 0.2,
-          }}
-          className="mx-auto mt-12 flex w-fit items-center gap-3 rounded-[28px] border border-white/20 bg-white/15 px-4 py-3 shadow-2xl backdrop-blur-2xl"
-        >
-          {apps.slice(0, 5).map((app) => {
-            const Icon = app.icon;
+          return (
+            <motion.button
+              key={app.name}
+              onClick={() => setActiveApp(app.name)}
+              whileHover={{
+                scale: 1.15,
+                y: -5,
+              }}
+              whileTap={{
+                scale: 0.9,
+              }}
+              className="flex h-11 w-11 items-center justify-center rounded-[14px] border border-white/20 bg-white/10 text-white backdrop-blur-xl sm:h-12 sm:w-12"
+            >
+              <Icon size={23} strokeWidth={1.7} />
+            </motion.button>
+          );
+        })}
+      </motion.div>
 
-            return (
-              <motion.button
-                key={app.name}
-                onClick={() =>
-                  setActiveApp(app.name)
-                }
-                whileHover={{
-                  scale: 1.2,
-                  y: -8,
-                }}
-                whileTap={{
-                  scale: 0.9,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 400,
-                  damping: 15,
-                }}
-                className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 shadow-lg backdrop-blur-xl"
-              >
-                <Icon
-                  size={24}
-                  strokeWidth={1.8}
-                />
-              </motion.button>
-            );
-          })}
-        </motion.div>
-      </div>
-
-      {/* =================================================== */}
-      {/* APP WINDOW */}
-      {/* =================================================== */}
+      {/* ================= APP WINDOW ================= */}
 
       <AnimatePresence>
         {activeApp && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-5 backdrop-blur-sm"
-            initial={{
-              opacity: 0,
-            }}
-            animate={{
-              opacity: 1,
-            }}
-            exit={{
-              opacity: 0,
-            }}
-            transition={{
-              duration: 0.2,
-            }}
-            onClick={() => setActiveApp(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md sm:p-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeApp}
           >
             <motion.div
-              className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-[30px] border border-white/20 bg-slate-950/80 p-6 shadow-2xl backdrop-blur-2xl"
               initial={{
                 opacity: 0,
-                scale: 0.8,
+                scale: 0.88,
                 y: 30,
               }}
               animate={{
@@ -422,462 +337,504 @@ export default function Home() {
               }}
               exit={{
                 opacity: 0,
-                scale: 0.8,
+                scale: 0.88,
                 y: 30,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 25,
-              }}
-              onClick={(e) =>
-                e.stopPropagation()
-              }
-            >
-              {/* ================================================= */}
-              {/* APP HEADER */}
-              {/* ================================================= */}
-
-              <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-2xl font-bold">
-                  {activeApp}
-                </h2>
-
-                <button
-                  onClick={() =>
-                    setActiveApp(null)
-                  }
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/20"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              {/* ================================================= */}
-              {/* ABOUT */}
-              {/* ================================================= */}
-
-              {activeApp === "About" && (
-                <div className="space-y-4">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white/10">
-                    <User size={40} />
-                  </div>
-
-                  <h3 className="text-3xl font-bold">
-                    Hi, I'm Mayur
-                  </h3>
-
-                  <p className="leading-7 text-white/70">
-                    Welcome to my personal digital
-                    space. This website works like my
-                    own personal operating system.
-                  </p>
-
-                  <div className="rounded-2xl bg-white/10 p-4">
-                    <p className="text-sm text-white/60">
-                      Developer
-                    </p>
-
-                    <p className="mt-1 font-semibold">
-                      Computer Science & AI
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* ================================================= */}
-              {/* PROJECTS */}
-              {/* ================================================= */}
-
-              {activeApp === "Projects" && (
-                <div className="space-y-5">
-                  {projects.map((project) => (
-                    <motion.div
-                      key={project.name}
-                      initial={{
-                        opacity: 0,
-                        y: 20,
-                      }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                      }}
-                      transition={{
-                        duration: 0.35,
-                      }}
-                      whileHover={{
-                        y: -4,
-                      }}
-                      className="group rounded-3xl border border-white/10 bg-white/[0.08] p-5 shadow-xl backdrop-blur-xl"
-                    >
-                      {/* PROJECT HEADER */}
-
-                      <div className="flex items-start gap-4">
-                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-3xl">
-                          {project.icon}
-                        </div>
-
-                        <div className="min-w-0">
-                          <h3 className="text-xl font-bold">
-                            {project.name}
-                          </h3>
-
-                          <p className="mt-2 text-sm leading-6 text-white/60">
-                            {project.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* TECHNOLOGIES */}
-
-                      <div className="mt-5 flex flex-wrap gap-2">
-                        {project.technologies.map(
-                          (tech) => (
-                            <span
-                              key={tech}
-                              className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-medium text-white/80"
-                            >
-                              {tech}
-                            </span>
-                          )
-                        )}
-                      </div>
-
-                      {/* BUTTONS */}
-
-                      <div className="mt-6 flex flex-wrap gap-3">
-                        {/* GitHub */}
-
-                        {project.github !== "#" && (
-                          <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-black transition hover:scale-105"
-                          >
-                            <Code2 size={16} />
-
-                            GitHub
-
-                            <ArrowUpRight
-                              size={15}
-                            />
-                          </a>
-                        )}
-
-                        {/* Live */}
-
-                        {project.live !== "#" && (
-                          <a
-                            href={project.live}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/20"
-                          >
-                            Live Demo
-
-                            <ArrowUpRight
-                              size={15}
-                            />
-                          </a>
-                        )}
-
-                        {/* View Project */}
-
-                        <button
-                          onClick={() =>
-                            setSelectedProject(
-                              project
-                            )
-                          }
-                          className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/20"
-                        >
-                          View Project
-
-                          <ExternalLink
-                            size={15}
-                          />
-                        </button>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-
-              {/* ================================================= */}
-              {/* SOCIAL */}
-              {/* ================================================= */}
-
-              {activeApp === "Social" && (
-                <div className="space-y-4">
-                  {socials.map((social) => {
-                    const Icon = social.icon;
-
-                    return (
-                      <a
-                        key={social.name}
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-4 rounded-2xl bg-white/10 p-4 transition hover:bg-white/20"
-                      >
-                        <Icon size={28} />
-
-                        <span className="font-semibold">
-                          {social.name}
-                        </span>
-
-                        <ArrowUpRight
-                          size={18}
-                          className="ml-auto"
-                        />
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* ================================================= */}
-              {/* MUSIC */}
-              {/* ================================================= */}
-
-              {activeApp === "Music" && (
-                <div className="space-y-5 text-center">
-                  <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-3xl bg-white/10">
-                    <Music size={48} />
-                  </div>
-
-                  <h3 className="text-2xl font-bold">
-                    Music
-                  </h3>
-
-                  <p className="text-white/60">
-                    My music section is coming soon.
-                  </p>
-
-                  <div className="rounded-2xl bg-white/10 p-5">
-                    <p className="text-sm text-white/50">
-                      Currently building...
-                    </p>
-
-                    <p className="mt-2 font-semibold">
-                      Personal Music Player
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* ================================================= */}
-              {/* GITHUB */}
-              {/* ================================================= */}
-
-              {activeApp === "GitHub" && (
-                <div className="space-y-5">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white/10">
-                    <Code2 size={44} />
-                  </div>
-
-                  <h3 className="text-3xl font-bold">
-                    GitHub
-                  </h3>
-
-                  <p className="text-white/60">
-                    Explore my coding projects and
-                    repositories.
-                  </p>
-
-                  <a
-                    href="https://github.com/mayursingh0907"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-black transition hover:scale-105"
-                  >
-                    Open GitHub
-
-                    <ArrowUpRight size={18} />
-                  </a>
-                </div>
-              )}
-
-              {/* ================================================= */}
-              {/* EDUCATION */}
-              {/* ================================================= */}
-
-              {activeApp === "Education" && (
-                <div className="space-y-5">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white/10">
-                    <GraduationCap size={44} />
-                  </div>
-
-                  <h3 className="text-3xl font-bold">
-                    Education
-                  </h3>
-
-                  <div className="rounded-2xl bg-white/10 p-5">
-                    <p className="text-sm text-white/50">
-                      Degree
-                    </p>
-
-                    <p className="mt-1 text-lg font-semibold">
-                      B.Tech Computer Science
-                    </p>
-
-                    <p className="text-white/60">
-                      Artificial Intelligence
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* ================================================= */}
-              {/* RESUME */}
-              {/* ================================================= */}
-
-              {activeApp === "Resume" && (
-                <div className="space-y-5">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white/10">
-                    <FileText size={44} />
-                  </div>
-
-                  <h3 className="text-3xl font-bold">
-                    Resume
-                  </h3>
-
-                  <p className="text-white/60">
-                    My professional resume will be
-                    available here.
-                  </p>
-
-                  <button className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-black transition hover:scale-105">
-                    <Download size={18} />
-
-                    Download Resume
-                  </button>
-                </div>
-              )}
-
-              {/* ================================================= */}
-              {/* SETTINGS */}
-              {/* ================================================= */}
-
-              {activeApp === "Settings" && (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4 rounded-2xl bg-white/10 p-5">
-                    <Settings size={28} />
-
-                    <div>
-                      <p className="text-sm text-white/50">
-                        Appearance
-                      </p>
-
-                      <p className="mt-1 font-semibold">
-                        Dark Mode
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="rounded-2xl bg-white/10 p-5">
-                    <p className="text-sm text-white/50">
-                      Version
-                    </p>
-
-                    <p className="mt-1 font-semibold">
-                      Mayur OS v1.0
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl bg-white/10 p-5">
-                    <p className="text-sm text-white/50">
-                      Developer
-                    </p>
-
-                    <p className="mt-1 font-semibold">
-                      Mayur Singh Jadon
-                    </p>
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ===================================================== */}
-      {/* PROJECT DETAIL WINDOW */}
-      {/* ===================================================== */}
-
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-5 backdrop-blur-md"
-            initial={{
-              opacity: 0,
-            }}
-            animate={{
-              opacity: 1,
-            }}
-            exit={{
-              opacity: 0,
-            }}
-            onClick={() =>
-              setSelectedProject(null)
-            }
-          >
-            <motion.div
-              className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[32px] border border-white/20 bg-slate-950/90 shadow-2xl backdrop-blur-2xl"
-              initial={{
-                opacity: 0,
-                scale: 0.85,
-                y: 40,
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                y: 0,
-              }}
-              exit={{
-                opacity: 0,
-                scale: 0.85,
-                y: 40,
               }}
               transition={{
                 type: "spring",
                 stiffness: 280,
                 damping: 25,
               }}
-              onClick={(e) =>
-                e.stopPropagation()
-              }
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-h-[85vh] w-full max-w-3xl overflow-hidden rounded-[30px] border border-white/15 bg-slate-950/80 shadow-2xl backdrop-blur-2xl"
             >
-              {/* ================================================= */}
-              {/* PROJECT HERO IMAGE */}
-              {/* ================================================= */}
+              {/* Window Header */}
 
-              <div className="relative h-56 overflow-hidden sm:h-72">
-                {/* Actual Project Screenshot */}
+              <div className="flex items-center justify-between border-b border-white/10 px-5 py-4 sm:px-6">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.25em] text-white/40">
+                    Application
+                  </p>
 
-                <img
-                  src="/projects/mayur-os.png"
-                  alt="Mayur OS"
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-
-                {/* Dark Gradient */}
-
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-
-                {/* Close Button */}
+                  <h2 className="mt-1 text-xl font-semibold">
+                    {activeApp}
+                  </h2>
+                </div>
 
                 <button
-                  onClick={() =>
-                    setSelectedProject(null)
-                  }
-                  className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-xl transition hover:bg-black/60"
+                  onClick={closeApp}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/70 transition hover:bg-white/20 hover:text-white"
                 >
                   <X size={20} />
                 </button>
+              </div>
 
-                {/* Project Name */}
+              {/* Window Content */}
+
+              <div className="max-h-[calc(85vh-85px)] overflow-y-auto p-5 sm:p-7">
+                {/* ================= ABOUT ================= */}
+
+                {activeApp === "About" && (
+                  <div className="space-y-6">
+                    <div>
+                      <p className="text-sm leading-7 text-white/60">
+                        Hey! I'm Mayur, a Computer Science student
+                        interested in modern web development,
+                        artificial intelligence and building creative
+                        digital experiences.
+                      </p>
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
+                        <p className="text-xs uppercase tracking-widest text-white/40">
+                          Focus
+                        </p>
+
+                        <p className="mt-2 font-semibold">
+                          Web Development
+                        </p>
+                      </div>
+
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
+                        <p className="text-xs uppercase tracking-widest text-white/40">
+                          Interest
+                        </p>
+
+                        <p className="mt-2 font-semibold">
+                          AI & Technology
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-transparent p-5">
+                      <p className="text-sm leading-7 text-white/60">
+                        Mayur OS is my attempt to turn a personal
+                        portfolio into something that feels more like
+                        an operating system than a traditional website.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* ================= PROJECTS ================= */}
+
+                {activeApp === "Projects" && (
+                  <div className="space-y-6">
+                    {projects.map((project) => (
+                      <motion.div
+                        key={project.name}
+                        initial={{
+                          opacity: 0,
+                          y: 25,
+                        }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                        }}
+                        transition={{
+                          duration: 0.4,
+                        }}
+                        whileHover={{
+                          y: -6,
+                        }}
+                        className="group overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.08] shadow-2xl backdrop-blur-xl"
+                      >
+                        {/* Project Image */}
+
+                        <div className="relative h-52 overflow-hidden sm:h-64">
+                          <motion.img
+                            src={project.image}
+                            alt={project.name}
+                            className="h-full w-full object-cover"
+                            whileHover={{
+                              scale: 1.06,
+                            }}
+                            transition={{
+                              duration: 0.5,
+                            }}
+                          />
+
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                          <div className="absolute bottom-4 left-5">
+                            <p className="text-xs font-medium uppercase tracking-[0.25em] text-white/60">
+                              Featured Project
+                            </p>
+
+                            <h3 className="mt-1 text-2xl font-bold text-white">
+                              {project.name}
+                            </h3>
+                          </div>
+                        </div>
+
+                        {/* Project Info */}
+
+                        <div className="p-5">
+                          <p className="text-sm leading-6 text-white/60">
+                            {project.description}
+                          </p>
+
+                          {/* Technologies */}
+
+                          <div className="mt-5 flex flex-wrap gap-2">
+                            {project.technologies.map((tech) => (
+                              <span
+                                key={tech}
+                                className="rounded-full border border-white/10 bg-white/[0.08] px-3 py-1.5 text-xs font-medium text-white/75"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* Buttons */}
+
+                          <div className="mt-6 flex flex-wrap gap-3">
+                            <a
+                              href={project.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-black transition hover:scale-105"
+                            >
+                              <Code2 size={16} />
+
+                              GitHub
+
+                              <ArrowUpRight size={15} />
+                            </a>
+
+                            <button
+                              onClick={() =>
+                                setSelectedProject(project)
+                              }
+                              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/20"
+                            >
+                              View Project
+
+                              <ExternalLink size={15} />
+                            </button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+
+                {/* ================= SOCIAL ================= */}
+
+                {activeApp === "Social" && (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <a
+                      href="#"
+                      className="group rounded-2xl border border-white/10 bg-white/[0.06] p-5 transition hover:bg-white/[0.1]"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-xs uppercase tracking-widest text-white/40">
+                            Social
+                          </p>
+
+                          <h3 className="mt-2 text-lg font-semibold">
+                            Instagram
+                          </h3>
+                        </div>
+
+                        <ArrowUpRight
+                          size={20}
+                          className="text-white/40 transition group-hover:text-white"
+                        />
+                      </div>
+                    </a>
+
+                    <a
+                      href="#"
+                      className="group rounded-2xl border border-white/10 bg-white/[0.06] p-5 transition hover:bg-white/[0.1]"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-xs uppercase tracking-widest text-white/40">
+                            Professional
+                          </p>
+
+                          <h3 className="mt-2 text-lg font-semibold">
+                            LinkedIn
+                          </h3>
+                        </div>
+
+                        <ArrowUpRight
+                          size={20}
+                          className="text-white/40 transition group-hover:text-white"
+                        />
+                      </div>
+                    </a>
+
+                    <a
+                      href="https://github.com/mayursingh0907"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group rounded-2xl border border-white/10 bg-white/[0.06] p-5 transition hover:bg-white/[0.1]"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-xs uppercase tracking-widest text-white/40">
+                            Code
+                          </p>
+
+                          <h3 className="mt-2 text-lg font-semibold">
+                            GitHub
+                          </h3>
+                        </div>
+
+                        <ArrowUpRight
+                          size={20}
+                          className="text-white/40 transition group-hover:text-white"
+                        />
+                      </div>
+                    </a>
+                  </div>
+                )}
+
+                {/* ================= MUSIC ================= */}
+
+                {activeApp === "Music" && (
+                  <div className="space-y-5">
+                    <div className="rounded-[25px] border border-white/10 bg-gradient-to-br from-purple-500/20 to-pink-500/10 p-6">
+                      <p className="text-xs uppercase tracking-[0.25em] text-white/40">
+                        Now Playing
+                      </p>
+
+                      <h3 className="mt-3 text-2xl font-bold">
+                        My Music Space
+                      </h3>
+
+                      <p className="mt-2 text-sm text-white/50">
+                        A future space for playlists, favorite songs
+                        and music recommendations.
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
+                      <div className="flex items-center gap-4">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
+                          <Music size={25} />
+                        </div>
+
+                        <div>
+                          <p className="font-semibold">
+                            Personal Playlist
+                          </p>
+
+                          <p className="text-sm text-white/40">
+                            Coming soon
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ================= GITHUB ================= */}
+
+                {activeApp === "GitHub" && (
+                  <div className="space-y-5">
+                    <div className="rounded-[25px] border border-white/10 bg-white/[0.06] p-6">
+                      <div className="flex items-center gap-4">
+                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+                          <Code2 size={32} />
+                        </div>
+
+                        <div>
+                          <p className="text-xs uppercase tracking-widest text-white/40">
+                            Developer
+                          </p>
+
+                          <h3 className="mt-1 text-2xl font-bold">
+                            mayursingh0907
+                          </h3>
+                        </div>
+                      </div>
+
+                      <p className="mt-5 text-sm leading-6 text-white/50">
+                        Explore my projects, experiments and code on
+                        GitHub.
+                      </p>
+
+                      <a
+                        href="https://github.com/mayursingh0907"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:scale-105"
+                      >
+                        Open GitHub
+                        <ArrowUpRight size={16} />
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {/* ================= EDUCATION ================= */}
+
+                {activeApp === "Education" && (
+                  <div className="space-y-5">
+                    <div className="rounded-[25px] border border-white/10 bg-white/[0.06] p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10">
+                          <GraduationCap size={28} />
+                        </div>
+
+                        <div>
+                          <p className="text-xs uppercase tracking-widest text-white/40">
+                            Degree
+                          </p>
+
+                          <h3 className="mt-2 text-xl font-bold">
+                            B.Tech Computer Science
+                          </h3>
+
+                          <p className="mt-1 text-sm text-white/50">
+                            Artificial Intelligence
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+                      <p className="text-sm leading-7 text-white/50">
+                        Currently developing my skills in programming,
+                        web development, artificial intelligence and
+                        modern software technologies.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* ================= RESUME ================= */}
+
+                {activeApp === "Resume" && (
+                  <div className="flex flex-col items-center justify-center py-10 text-center">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-[25px] border border-white/10 bg-white/[0.08]">
+                      <FileText size={38} />
+                    </div>
+
+                    <h3 className="mt-6 text-2xl font-bold">
+                      My Resume
+                    </h3>
+
+                    <p className="mt-2 max-w-md text-sm leading-6 text-white/50">
+                      My complete resume will be available here soon.
+                    </p>
+
+                    <button
+                      disabled
+                      className="mt-6 inline-flex cursor-not-allowed items-center gap-2 rounded-xl bg-white/10 px-5 py-3 text-sm font-semibold text-white/40"
+                    >
+                      <Download size={17} />
+                      Resume Coming Soon
+                    </button>
+                  </div>
+                )}
+
+                {/* ================= SETTINGS ================= */}
+
+                {activeApp === "Settings" && (
+                  <div className="space-y-4">
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-semibold">
+                            Interface
+                          </p>
+
+                          <p className="mt-1 text-sm text-white/40">
+                            Mayur OS experience
+                          </p>
+                        </div>
+
+                        <div className="rounded-full bg-green-400/15 px-3 py-1 text-xs text-green-300">
+                          Active
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
+                      <div className="flex items-center gap-3">
+                        <CheckCircle2
+                          size={20}
+                          className="text-green-300"
+                        />
+
+                        <div>
+                          <p className="font-semibold">
+                            System Status
+                          </p>
+
+                          <p className="text-sm text-white/40">
+                            All systems operational
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ================= PROJECT DETAIL MODAL ================= */}
+
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-lg sm:p-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div
+              initial={{
+                opacity: 0,
+                scale: 0.9,
+                y: 30,
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                scale: 0.9,
+                y: 30,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 280,
+                damping: 25,
+              }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-[30px] border border-white/15 bg-slate-950 shadow-2xl"
+            >
+              {/* Hero */}
+
+              <div className="relative h-56 overflow-hidden sm:h-72">
+                <img
+                  src={selectedProject.image}
+                  alt={selectedProject.name}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/30 text-white backdrop-blur-xl transition hover:bg-white/20"
+                >
+                  <X size={20} />
+                </button>
 
                 <div className="absolute bottom-5 left-6">
                   <p className="text-xs font-semibold uppercase tracking-[0.25em] text-white/60">
@@ -890,109 +847,79 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* ================================================= */}
-              {/* PROJECT CONTENT */}
-              {/* ================================================= */}
+              {/* Details */}
 
-              <div className="p-6 sm:p-8">
-                {/* DESCRIPTION */}
+              <div className="max-h-[calc(90vh-288px)] overflow-y-auto p-6 sm:p-8">
+                <div className="grid gap-8 md:grid-cols-[1.2fr_0.8fr]">
+                  {/* Left */}
 
-                <p className="leading-7 text-white/60">
-                  {selectedProject.description}
-                </p>
+                  <div>
+                    <p className="text-sm leading-7 text-white/60">
+                      {selectedProject.description}
+                    </p>
 
-                {/* ================================================= */}
-                {/* TECHNOLOGIES */}
-                {/* ================================================= */}
+                    <h3 className="mt-8 text-lg font-semibold">
+                      Key Features
+                    </h3>
 
-                <div className="mt-8">
-                  <h3 className="text-lg font-semibold">
-                    Technologies
-                  </h3>
-
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {selectedProject.technologies.map(
-                      (tech: string) => (
-                        <span
-                          key={tech}
-                          className="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-sm text-white/80"
-                        >
-                          {tech}
-                        </span>
-                      )
-                    )}
-                  </div>
-                </div>
-
-                {/* ================================================= */}
-                {/* FEATURES */}
-                {/* ================================================= */}
-
-                <div className="mt-8">
-                  <h3 className="text-lg font-semibold">
-                    Key Features
-                  </h3>
-
-                  <div className="mt-4 space-y-3">
-                    {selectedProject.features.map(
-                      (feature: string) => (
+                    <div className="mt-4 space-y-3">
+                      {selectedProject.features.map((feature) => (
                         <div
                           key={feature}
-                          className="flex items-center gap-3 rounded-xl border border-white/5 bg-white/[0.06] p-3"
+                          className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3"
                         >
                           <CheckCircle2
-                            size={19}
-                            className="shrink-0 text-green-400"
+                            size={17}
+                            className="shrink-0 text-green-300"
                           />
 
-                          <span className="text-sm text-white/75">
+                          <span className="text-sm text-white/70">
                             {feature}
                           </span>
                         </div>
-                      )
-                    )}
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                {/* ================================================= */}
-                {/* ACTION BUTTONS */}
-                {/* ================================================= */}
+                  {/* Right */}
 
-                <div className="mt-8 flex flex-wrap gap-3">
-                  {/* GitHub */}
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      Technologies
+                    </h3>
 
-                  {selectedProject.github !==
-                    "#" && (
-                    <a
-                      href={
-                        selectedProject.github
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-black transition hover:scale-105"
-                    >
-                      <Code2 size={18} />
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {selectedProject.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-2 text-xs text-white/70"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
 
-                      GitHub
+                    <div className="mt-8 space-y-3">
+                      <a
+                        href={selectedProject.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:scale-[1.02]"
+                      >
+                        <Code2 size={17} />
+                        View on GitHub
+                        <ArrowUpRight size={16} />
+                      </a>
 
-                      <ArrowUpRight size={16} />
-                    </a>
-                  )}
-
-                  {/* Live Demo */}
-
-                  {selectedProject.live !== "#" && (
-                    <a
-                      href={selectedProject.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3 font-semibold text-white transition hover:bg-white/20"
-                    >
-                      Live Demo
-
-                      <ArrowUpRight size={17} />
-                    </a>
-                  )}
+                      <button
+                        disabled={selectedProject.live === "#"}
+                        className="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-5 py-3 text-sm font-semibold text-white/40"
+                      >
+                        <ExternalLink size={17} />
+                        Live Website
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
